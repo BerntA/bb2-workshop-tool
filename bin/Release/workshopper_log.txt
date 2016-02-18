@@ -1,0 +1,12 @@
+C:\Users\Johan\Documents\GitHub\brainbread2-workshop\bin\Release\assets\\501035505.jpg
+C:\Users\Johan\Documents\GitHub\brainbread2-workshop\bin\Release\assets\\501035505.jpg
+Out of memory.
+Out of memory.
+C:\Users\Johan\Documents\GitHub\brainbread2-workshop\bin\Release\assets\\501035505.jpg
+Out of memory.
+Out of memory.
+Out of memory.
+The process cannot access the file 'C:\Users\Johan\Documents\GitHub\brainbread2-workshop\bin\Release\assets\workshopper\addons\501035505.jpg' because it is being used by another process.
+Submitted item successfully!
+The process cannot access the file 'C:\Users\Johan\Documents\GitHub\brainbread2-workshop\bin\Release\assets\workshopper\addons\501035505.jpg' because it is being used by another process.
+Submitted item successfully!

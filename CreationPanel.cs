@@ -363,10 +363,16 @@ namespace workshopper
                 return;
             }
 
-            if (!IsStringValid(m_pTitle.Text) || !IsStringValid(m_pDescription.Text) ||
+            if (!IsStringValid(m_pTitle.Text)/* || !IsStringValid(m_pDescription.Text)*/ ||
                 (m_bShouldUpdateItem && !IsStringValid(m_pPatchNotes.Text) && !string.IsNullOrEmpty(m_pPatchNotes.Text)))
             {
                 utils.ShowWarningDialog("Invalid characters detected!", null, true);
+                return;
+            }
+
+            if (m_pDescription.Text.Length > 1000)
+            {
+                utils.ShowWarningDialog("The description is more than 1000 characters long!", null, true);
                 return;
             }
 
