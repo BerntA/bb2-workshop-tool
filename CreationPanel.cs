@@ -74,31 +74,90 @@ namespace workshopper
 
             GetTagsFromString(tags);
 
+            /*
+             0 "Story Mode",
+             1 "Objective",
+             2 "Elimination",
+             3 "Arena",
+             4 "Weapons",
+             5 "NPCs",
+             6 "Survivors",
+             7 "Survivor Voicesets",
+             8 "NPC Voicesets",
+             9 "Weapons Sounds",
+             10 "Misc Sounds",
+             11 "Textures"
+            */
             for (int i = 0; i < pszTagList.Count(); i++)
             {
-                if (pszTagList[i] == "Classic")
+                if (pszTagList[i] == "Story Mode")
+                {
+                    SetTags(0);
+                    SelectType.LabelTxt = utils.GetWorkshopType[0];
                     m_pCheckBox[0].ActiviateItem(true);
-
-                else if (pszTagList[i] == "Elimination")
+                }
+                else if (pszTagList[i] == "Objective")
+                {
+                    SetTags(0);
+                    SelectType.LabelTxt = utils.GetWorkshopType[0];
                     m_pCheckBox[1].ActiviateItem(true);
-
-                else if (pszTagList[i] == "Arena")
+                }
+                else if (pszTagList[i] == "Elimination")
+                {
+                    SetTags(0);
+                    SelectType.LabelTxt = utils.GetWorkshopType[0];
                     m_pCheckBox[2].ActiviateItem(true);
-
-                else if (pszTagList[i] == "Weapons")
+                }
+                else if (pszTagList[i] == "Arena")
+                {
+                    SetTags(0);
+                    SelectType.LabelTxt = utils.GetWorkshopType[0];
                     m_pCheckBox[3].ActiviateItem(true);
-
-                else if (pszTagList[i] == "Survivors")
+                }
+                else if (pszTagList[i] == "Weapons")
+                {
+                    SetTags(1);
+                    SelectType.LabelTxt = utils.GetWorkshopType[1];
                     m_pCheckBox[4].ActiviateItem(true);
-
-                else if (pszTagList[i] == "Sounds")
+                }
+                else if (pszTagList[i] == "NPCs")
+                {
+                    SetTags(1);
+                    SelectType.LabelTxt = utils.GetWorkshopType[1];
                     m_pCheckBox[5].ActiviateItem(true);
-
-                else if (pszTagList[i] == "Textures")
+                }
+                else if (pszTagList[i] == "Survivors")
+                {
+                    SetTags(1);
+                    SelectType.LabelTxt = utils.GetWorkshopType[1];
                     m_pCheckBox[6].ActiviateItem(true);
-
-                else if (pszTagList[i] == "Other")
+                }
+                else if (pszTagList[i] == "Survivor Voicesets")
+                {
+                    SetTags(2);
+                    SelectType.LabelTxt = utils.GetWorkshopType[2];
                     m_pCheckBox[7].ActiviateItem(true);
+                }
+                else if (pszTagList[i] == "NPC Voicesets")
+                {
+                    SetTags(2);
+                    SelectType.LabelTxt = utils.GetWorkshopType[2];
+                    m_pCheckBox[8].ActiviateItem(true);
+                }
+                else if (pszTagList[i] == "Weapons Sounds")
+                {
+                    SetTags(2);
+                    SelectType.LabelTxt = utils.GetWorkshopType[2];
+                    m_pCheckBox[9].ActiviateItem(true);
+                }
+                else if (pszTagList[i] == "Misc Sounds")
+                {
+                    SetTags(2);
+                    SelectType.LabelTxt = utils.GetWorkshopType[2];
+                    m_pCheckBox[10].ActiviateItem(true);
+                }
+                else if (pszTagList[i] == "Textures")
+                    m_pCheckBox[11].ActiviateItem(true);
             }
 
             m_pPatchNotes.Visible = m_pPatchNotes.Enabled = true;
@@ -106,11 +165,26 @@ namespace workshopper
             Invalidate();
         }
 
+        private void SelectType_Click(object sender, EventArgs e)
+        {
+            SelectType_List.Visible = !SelectType_List.Visible;
+            SelectType_List.BringToFront();
+        }
+
         protected override void OnFormCreate(float percentW, float percentH)
         {
             InitializeComponent();
             Opacity = 0;
             flStandardHeight = ((float)Height * 0.075F);
+
+            SelectType_List.Visible = false;
+            SelectType_List.bUseFixedWidth = false;
+
+            // Adds the workshop types
+            for (int i = 0; i < utils.GetWorkshopType.Count(); i++)
+                SelectType_List.AddItem(utils.GetWorkshopType[i]);
+
+            SelectType.LabelTxt = "Select a workshop type";
 
             _fileDialog = new OpenFileDialog();
             _fileDialog.DefaultExt = ".jpg";
@@ -128,13 +202,15 @@ namespace workshopper
 
             TextButton btnImg = new TextButton("Select Image:", Color.White, Color.Red);
             btnImg.Parent = this;
-            btnImg.Bounds = new Rectangle(2, Height - 122, 100, 20);
+            btnImg.Bounds = new Rectangle(2, Height - 230, 100, 20);
             btnImg.Click += new EventHandler(OnOpenImageSelection);
 
             TextButton btnFile = new TextButton("Select File Dir:", Color.White, Color.Red);
             btnFile.Parent = this;
-            btnFile.Bounds = new Rectangle(2, Height - 102, 100, 20);
+            btnFile.Bounds = new Rectangle(2, Height - 210, 100, 20);
             btnFile.Click += new EventHandler(OnOpenFolderDialog);
+
+            SelectType_List.OnItemClick += new EventHandler(OnSelectType);
 
             m_pLabelFields = new TextBox[2];
             for (int i = 0; i < 2; i++)
@@ -152,27 +228,45 @@ namespace workshopper
             }
 
             Size strSize = TextRenderer.MeasureText("Select Image:", m_pLabelFields[0].Font);
-            m_pLabelFields[0].Bounds = new Rectangle(2 + strSize.Width, Height - 122, 300 - strSize.Width + 2, strSize.Height);
+            m_pLabelFields[0].Bounds = new Rectangle(2 + strSize.Width, Height - 230, 300 - strSize.Width + 2, strSize.Height);
             strSize = TextRenderer.MeasureText("Select File Dir:", m_pLabelFields[1].Font);
-            m_pLabelFields[1].Bounds = new Rectangle(2 + strSize.Width, Height - 102, 300 - strSize.Width + 2, strSize.Height);
+            m_pLabelFields[1].Bounds = new Rectangle(2 + strSize.Width, Height - 210, 300 - strSize.Width + 2, strSize.Height);
 
-            m_pCheckBox = new CheckBoxItem[8];
+            m_pCheckBox = new CheckBoxItem[12];
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 12; i++)
             {
                 m_pCheckBox[i] = new CheckBoxItem(utils.GetAvailableTags[i]);
                 m_pCheckBox[i].Parent = this;
                 m_pCheckBox[i].Click += new EventHandler(OnTagClicked);
             }
 
-            m_pCheckBox[0].Bounds = new Rectangle(6, (Height - 64) + 0, 100, 20);
-            m_pCheckBox[1].Bounds = new Rectangle(6, (Height - 64) + 20, 100, 20);
-            m_pCheckBox[2].Bounds = new Rectangle(6, (Height - 64) + 40, 100, 20);
-            m_pCheckBox[3].Bounds = new Rectangle(106, (Height - 64) + 0, 100, 20);
-            m_pCheckBox[4].Bounds = new Rectangle(106, (Height - 64) + 20, 100, 20);
-            m_pCheckBox[5].Bounds = new Rectangle(206, (Height - 64) + 0, 100, 20);
-            m_pCheckBox[6].Bounds = new Rectangle(206, (Height - 64) + 20, 100, 20);
-            m_pCheckBox[7].Bounds = new Rectangle(206, (Height - 64) + 40, 100, 20);
+            /*
+             0 "Story Mode",
+             1 "Objective",
+             2 "Elimination",
+             3 "Arena",
+             4 "Weapons",
+             5 "NPCs",
+             6 "Survivors",
+             7 "Survivor Voicesets",
+             8 "NPC Voicesets",
+             9 "Weapons Sounds",
+             10 "Misc Sounds",
+             11 "Textures"
+            */
+            m_pCheckBox[0].Bounds = new Rectangle(6, (Height - 160) + 0, 100, 20);
+            m_pCheckBox[1].Bounds = new Rectangle(6, (Height - 160) + 20, 100, 20);
+            m_pCheckBox[2].Bounds = new Rectangle(6, (Height - 160) + 40, 100, 20);
+            m_pCheckBox[3].Bounds = new Rectangle(6, (Height - 160) + 60, 100, 20);
+            m_pCheckBox[4].Bounds = new Rectangle(106, (Height - 160) + 0, 100, 20);
+            m_pCheckBox[5].Bounds = new Rectangle(106, (Height - 160) + 20, 100, 20);
+            m_pCheckBox[6].Bounds = new Rectangle(106, (Height - 160) + 40, 100, 20);
+            m_pCheckBox[7].Bounds = new Rectangle(106, (Height - 28) - 20, 140, 20);
+            m_pCheckBox[8].Bounds = new Rectangle(106, (Height - 28) - 20, 100, 20);
+            m_pCheckBox[9].Bounds = new Rectangle(106, (Height - 28) - 40, 140, 20);
+            m_pCheckBox[10].Bounds = new Rectangle(106, (Height - 28) - 0, 100, 20);
+            m_pCheckBox[11].Bounds = new Rectangle(6, (Height - 28) + 0, 100, 20);
 
             m_pContestTags = new ComboBox();
             m_pContestTags.Parent = this;
@@ -198,7 +292,7 @@ namespace workshopper
             m_pDescription.BackColor = BackColor;
             m_pDescription.BorderStyle = BorderStyle.FixedSingle;
             m_pDescription.Font = new System.Drawing.Font("Arial", 8, FontStyle.Regular);
-            m_pDescription.Bounds = new Rectangle(310, (int)flStandardHeight + 65, Width - 320, 85);
+            m_pDescription.Bounds = new Rectangle(310, (int)flStandardHeight + 65, Width - 320, 175);
 
             m_pPatchNotes = new RichTextBox();
             m_pPatchNotes.Parent = this;
@@ -206,7 +300,7 @@ namespace workshopper
             m_pPatchNotes.BackColor = BackColor;
             m_pPatchNotes.BorderStyle = BorderStyle.FixedSingle;
             m_pPatchNotes.Font = new System.Drawing.Font("Arial", 8, FontStyle.Regular);
-            m_pPatchNotes.Bounds = new Rectangle(380, (int)flStandardHeight + 175, Width - 390, 54);
+            m_pPatchNotes.Bounds = new Rectangle(380, (int)flStandardHeight + 275, Width - 390, 54);
             m_pPatchNotes.Visible = m_pPatchNotes.Enabled = false;
 
             ImageButton btnUpload = new ImageButton("upload", "upload_hover");
@@ -223,7 +317,7 @@ namespace workshopper
                 m_pVisibilityChoices[i].ForeColor = Color.White;
                 m_pVisibilityChoices[i].BackColor = Color.Transparent;
                 m_pVisibilityChoices[i].AutoSize = false;
-                m_pVisibilityChoices[i].Bounds = new Rectangle(310, ((int)flStandardHeight + 160) + (i * 18), 100, 18);
+                m_pVisibilityChoices[i].Bounds = new Rectangle(310, ((int)flStandardHeight + 270) + (i * 18), 100, 18);
                 m_pVisibilityChoices[i].Cursor = Cursors.Hand;
             }
 
@@ -236,6 +330,79 @@ namespace workshopper
             UGCHandler.OnCreateWorkshopItem += new UGCHandler.ItemCreatedHandler(OnCreateItem);
 
             base.OnFormCreate(0.07F, 0.07F);
+        }
+
+        private void OnSelectType(object sender, EventArgs e)
+        {
+            string szItem = ((Label)sender).Text;
+
+            SelectType.LabelTxt = szItem;
+            SelectType_List.Visible = false;
+
+            // Lets check what type it is
+            if (szItem == utils.GetWorkshopType[0])
+                SetTags(0);
+            else if (szItem == utils.GetWorkshopType[1])
+                SetTags(1);
+            else if (szItem == utils.GetWorkshopType[2])
+                SetTags(2);
+
+            // Lets reset everything...
+            for (int i = 0; i < 12; i++)
+            {
+                RemoveTag(utils.GetAvailableTags[i]);
+                m_pCheckBox[i].ActiviateItem(false);
+            }
+        }
+
+        private void SetTags(int tagtype)
+        {
+            // Lets check what type it is
+            if (tagtype == 0)
+            {
+                m_pCheckBox[0].EnableItem(true);
+                m_pCheckBox[1].EnableItem(true);
+                m_pCheckBox[2].EnableItem(true);
+                m_pCheckBox[3].EnableItem(true);
+                m_pCheckBox[4].EnableItem(false);
+                m_pCheckBox[5].EnableItem(false);
+                m_pCheckBox[6].EnableItem(false);
+                m_pCheckBox[7].EnableItem(false);
+                m_pCheckBox[8].EnableItem(false);
+                m_pCheckBox[9].EnableItem(false);
+                m_pCheckBox[10].EnableItem(false);
+                m_pCheckBox[11].EnableItem(true);
+            }
+            else if (tagtype == 1)
+            {
+                m_pCheckBox[0].EnableItem(false);
+                m_pCheckBox[1].EnableItem(false);
+                m_pCheckBox[2].EnableItem(false);
+                m_pCheckBox[3].EnableItem(false);
+                m_pCheckBox[4].EnableItem(true);
+                m_pCheckBox[5].EnableItem(true);
+                m_pCheckBox[6].EnableItem(true);
+                m_pCheckBox[7].EnableItem(false);
+                m_pCheckBox[8].EnableItem(false);
+                m_pCheckBox[9].EnableItem(false);
+                m_pCheckBox[10].EnableItem(false);
+                m_pCheckBox[11].EnableItem(true);
+            }
+            else if (tagtype == 2)
+            {
+                m_pCheckBox[0].EnableItem(false);
+                m_pCheckBox[1].EnableItem(false);
+                m_pCheckBox[2].EnableItem(false);
+                m_pCheckBox[3].EnableItem(false);
+                m_pCheckBox[4].EnableItem(false);
+                m_pCheckBox[5].EnableItem(false);
+                m_pCheckBox[6].EnableItem(false);
+                m_pCheckBox[7].EnableItem(true);
+                m_pCheckBox[8].EnableItem(true);
+                m_pCheckBox[9].EnableItem(true);
+                m_pCheckBox[10].EnableItem(true);
+                m_pCheckBox[11].EnableItem(false);
+            }
         }
 
         private void SubmitWorkshopItem(PublishedFileId_t fileID, string changelog)
@@ -450,8 +617,10 @@ namespace workshopper
             format.LineAlignment = StringAlignment.Center;
             format.Alignment = StringAlignment.Near;
 
-            e.Graphics.DrawString("Tags", new Font("Arial", 14, FontStyle.Bold, GraphicsUnit.Pixel), Brushes.White, new Rectangle(2, Height - 84, 100, 20), format);
-            e.Graphics.DrawRectangle(Pens.Black, new Rectangle(2, Height - 64, 304, 60));
+        //    e.Graphics.DrawString("Game Modes", new Font("Arial", 12, FontStyle.Bold, GraphicsUnit.Pixel), Brushes.White, new Rectangle(2, Height - 160, 100, 20), format);
+        //    e.Graphics.DrawString("Custom Models", new Font("Arial", 12, FontStyle.Bold, GraphicsUnit.Pixel), Brushes.White, new Rectangle(100, Height - 170, 120, 30), format);
+        //    e.Graphics.DrawString("Custom Sounds", new Font("Arial", 12, FontStyle.Bold, GraphicsUnit.Pixel), Brushes.White, new Rectangle(200, Height - 170, 120, 30), format);
+        //    e.Graphics.DrawRectangle(Pens.Black, new Rectangle(2, Height - 128, 304, 60));
 
             e.Graphics.DrawString("Contest:", Font, Brushes.White, new Rectangle(310, Height - 50, 160, 15));
             e.Graphics.DrawString(Text, Font, Brushes.White, new Rectangle(0, 2, Width, (int)flStandardHeight));
@@ -459,7 +628,7 @@ namespace workshopper
             e.Graphics.DrawString("Description:", Font, Brushes.White, new Rectangle(310, (int)flStandardHeight + 45, Width - 320, 14));
 
             if (m_bShouldUpdateItem)
-                e.Graphics.DrawString("Changelog:", Font, Brushes.White, new Rectangle(380, (int)flStandardHeight + 155, Width - 390, 16));
+                e.Graphics.DrawString("Changelog:", Font, Brushes.White, new Rectangle(380, (int)flStandardHeight + 255, Width - 390, 16));
 
             string imagePreview = (m_bHasChangedImagePath ? pszImagePath : null);
             m_pLabelFields[0].Text = imagePreview;

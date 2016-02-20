@@ -76,8 +76,9 @@ namespace workshopper.core
             }
         }
 
-        public static string[] GetAvailableTags = { "Objective", "Elimination", "Arena", "Weapons", "Survivors", "Sounds", "Textures", "Other" };
+        public static string[] GetAvailableTags = { "Story Mode", "Objective", "Elimination", "Arena", "Weapons", "NPCs", "Survivors", "Survivor Voicesets", "NPC Voicesets", "Weapons Sounds", "Misc Sounds", "Textures" };
         public static string[] GetContestTags = { "Christmas", "Halloween" };
+        public static string[] GetWorkshopType = { "Game Mode", "Custom Models", "Custom Sounds" };
         public static void AddContestItems(ComboBox box)
         {
             // Check what time of the year it is:

@@ -95,6 +95,18 @@
     <Compile Include="controls\ImageButton.Designer.cs">
       <DependentUpon>ImageButton.cs</DependentUpon>
     </Compile>
+    <Compile Include="controls\ItemList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="controls\ItemList.Designer.cs">
+      <DependentUpon>ItemList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="controls\ListButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="controls\ListButton.Designer.cs">
+      <DependentUpon>ListButton.cs</DependentUpon>
+    </Compile>
     <Compile Include="controls\TextButton.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -143,6 +155,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="controls\ImageButton.resx">
       <DependentUpon>ImageButton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\ItemList.resx">
+      <DependentUpon>ItemList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="controls\TextButton.resx">
       <DependentUpon>TextButton.cs</DependentUpon>

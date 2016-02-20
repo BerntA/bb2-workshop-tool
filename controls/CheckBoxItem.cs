@@ -25,7 +25,17 @@ namespace workshopper.controls
             STATE_ACTIVATED = 2,
         }
 
-        public bool IsItemChecked() { return (m_iItemState >= 2); }
+        // This will check if the item will be enabled or disabled
+        enum CheckBoxEnabled
+        {
+            STATE_DISABLED = 0,
+            STATE_ENABLED = 1,
+        }
+
+        public bool IsItemChecked() { return (m_iItemState >= 2); } // Is it already activated?
+        public bool IsItemEnabled() { return (m_iItemEnabled >= 1); } // Lets check if its enabled, so we can use it
+
+        // Lets activate the item
         public void ActiviateItem(bool value)
         {
             if (value)
@@ -35,9 +45,23 @@ namespace workshopper.controls
 
             Invalidate();
         }
+
+        // Lets enable the item
+        public void EnableItem(bool value)
+        {
+            if (value)
+                m_iItemEnabled = (int)CheckBoxEnabled.STATE_ENABLED;
+            else
+                m_iItemEnabled = (int)CheckBoxEnabled.STATE_DISABLED;
+
+            Invalidate();
+        }
+
+        // Whats the checkbox text?
         public string GetText() { return pszText; }
 
         private int m_iItemState;
+        private int m_iItemEnabled;
         private string pszText;
         public CheckBoxItem(string text)
         {
@@ -48,6 +72,11 @@ namespace workshopper.controls
 
         protected override void OnMouseEnter(EventArgs e)
         {
+            // Lets check if its enabled, so we can use it
+            if (m_iItemEnabled == (int)CheckBoxEnabled.STATE_DISABLED)
+                return;
+
+            // Lets check if its already pressed
             if (m_iItemState == (int)CheckBoxStates.STATE_ACTIVATED)
                 return;
 
@@ -58,6 +87,11 @@ namespace workshopper.controls
 
         protected override void OnMouseLeave(EventArgs e)
         {
+            // Lets check if its enabled, so we can use it
+            if (m_iItemEnabled == (int)CheckBoxEnabled.STATE_DISABLED)
+                return;
+
+            // Lets check if its already pressed
             if (m_iItemState == (int)CheckBoxStates.STATE_ACTIVATED)
                 return;
 
@@ -67,7 +101,12 @@ namespace workshopper.controls
         }
 
         protected override void OnClick(EventArgs e)
-        {           
+        {
+            // Lets check if its enabled, so we can use it
+            if (m_iItemEnabled == (int)CheckBoxEnabled.STATE_DISABLED)
+                return;
+
+            // Lets check the states if we are hovering or if its activated
             if (m_iItemState != (int)CheckBoxStates.STATE_ACTIVATED)
                 m_iItemState = (int)CheckBoxStates.STATE_ACTIVATED;
             else
@@ -82,10 +121,16 @@ namespace workshopper.controls
         {
             base.OnPaint(e);
 
-            if (m_iItemState == (int)CheckBoxStates.STATE_ACTIVATED)
-                e.Graphics.DrawImage(globals.GetTexture("CBox_Check"), new Rectangle(0, 0, Height, Height));
+            // If Activated
+            if (m_iItemEnabled == (int)CheckBoxEnabled.STATE_DISABLED)
+                e.Graphics.DrawImage(globals.GetTexture("CBox_Check_Disabled"), new Rectangle(0, 0, Height, Height));
             else
-                e.Graphics.DrawImage(globals.GetTexture("CBox_UnCheck"), new Rectangle(0, 0, Height, Height));
+            {
+                if (m_iItemState == (int)CheckBoxStates.STATE_ACTIVATED)
+                    e.Graphics.DrawImage(globals.GetTexture("CBox_Check"), new Rectangle(0, 0, Height, Height));
+                else // If now activated, lets uncheck it
+                    e.Graphics.DrawImage(globals.GetTexture("CBox_UnCheck"), new Rectangle(0, 0, Height, Height));
+            }
 
             StringFormat format = new StringFormat();
             format.LineAlignment = StringAlignment.Center;
