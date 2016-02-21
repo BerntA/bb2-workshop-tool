@@ -28,12 +28,12 @@ namespace workshopper.controls
         // This will check if the item will be enabled or disabled
         enum CheckBoxEnabled
         {
-            STATE_DISABLED = 0,
-            STATE_ENABLED = 1,
+            STATE_ENABLED = 0,
+            STATE_DISABLED = 1,
         }
 
         public bool IsItemChecked() { return (m_iItemState >= 2); } // Is it already activated?
-        public bool IsItemEnabled() { return (m_iItemEnabled >= 1); } // Lets check if its enabled, so we can use it
+        public bool IsItemEnabled() { return (m_iItemEnabled <= 0); } // Lets check if its enabled, so we can use it
 
         // Lets activate the item
         public void ActiviateItem(bool value)
@@ -59,6 +59,11 @@ namespace workshopper.controls
 
         // Whats the checkbox text?
         public string GetText() { return pszText; }
+        public string SetText(string text)
+        {
+            pszText = text;
+            return pszText;
+        }
 
         private int m_iItemState;
         private int m_iItemEnabled;

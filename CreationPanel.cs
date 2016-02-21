@@ -88,8 +88,11 @@ namespace workshopper
              10 "Misc Sounds",
              11 "Textures"
             */
+
             for (int i = 0; i < pszTagList.Count(); i++)
             {
+                // Debugging
+                //utils.LogAction(m_pCheckBox[0]);
                 if (pszTagList[i] == "Story Mode")
                 {
                     SetTags(0);
@@ -118,47 +121,57 @@ namespace workshopper
                 {
                     SetTags(1);
                     SelectType.LabelTxt = utils.GetWorkshopType[1];
-                    m_pCheckBox[4].ActiviateItem(true);
+                    m_pCheckBox[0].ActiviateItem(true);
                 }
                 else if (pszTagList[i] == "NPCs")
                 {
                     SetTags(1);
                     SelectType.LabelTxt = utils.GetWorkshopType[1];
-                    m_pCheckBox[5].ActiviateItem(true);
+                    m_pCheckBox[1].ActiviateItem(true);
                 }
                 else if (pszTagList[i] == "Survivors")
                 {
                     SetTags(1);
                     SelectType.LabelTxt = utils.GetWorkshopType[1];
-                    m_pCheckBox[6].ActiviateItem(true);
+                    m_pCheckBox[2].ActiviateItem(true);
                 }
                 else if (pszTagList[i] == "Survivor Voicesets")
                 {
                     SetTags(2);
                     SelectType.LabelTxt = utils.GetWorkshopType[2];
-                    m_pCheckBox[7].ActiviateItem(true);
+                    m_pCheckBox[0].ActiviateItem(true);
                 }
                 else if (pszTagList[i] == "NPC Voicesets")
                 {
                     SetTags(2);
                     SelectType.LabelTxt = utils.GetWorkshopType[2];
-                    m_pCheckBox[8].ActiviateItem(true);
+                    m_pCheckBox[1].ActiviateItem(true);
                 }
                 else if (pszTagList[i] == "Weapons Sounds")
                 {
                     SetTags(2);
                     SelectType.LabelTxt = utils.GetWorkshopType[2];
-                    m_pCheckBox[9].ActiviateItem(true);
+                    m_pCheckBox[2].ActiviateItem(true);
                 }
                 else if (pszTagList[i] == "Misc Sounds")
                 {
                     SetTags(2);
                     SelectType.LabelTxt = utils.GetWorkshopType[2];
-                    m_pCheckBox[10].ActiviateItem(true);
+                    m_pCheckBox[3].ActiviateItem(true);
                 }
                 else if (pszTagList[i] == "Textures")
-                    m_pCheckBox[11].ActiviateItem(true);
+                {
+                    if (SelectType.LabelTxt == utils.GetWorkshopType[0])
+                        m_pCheckBox[4].ActiviateItem(true);
+                    else
+                        m_pCheckBox[3].ActiviateItem(true);
+                }
+
             }
+
+            // Lets remove the previous tags.
+            for (int i = 0; i < utils.GetAvailableTags[i].Count(); i++)
+                RemoveTag(utils.GetAvailableTags[i]);
 
             m_pPatchNotes.Visible = m_pPatchNotes.Enabled = true;
 
@@ -232,41 +245,27 @@ namespace workshopper
             strSize = TextRenderer.MeasureText("Select File Dir:", m_pLabelFields[1].Font);
             m_pLabelFields[1].Bounds = new Rectangle(2 + strSize.Width, Height - 210, 300 - strSize.Width + 2, strSize.Height);
 
-            m_pCheckBox = new CheckBoxItem[12];
+            m_pCheckBox = new CheckBoxItem[5];
 
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 5; i++)
             {
                 m_pCheckBox[i] = new CheckBoxItem(utils.GetAvailableTags[i]);
                 m_pCheckBox[i].Parent = this;
                 m_pCheckBox[i].Click += new EventHandler(OnTagClicked);
             }
 
-            /*
-             0 "Story Mode",
-             1 "Objective",
-             2 "Elimination",
-             3 "Arena",
-             4 "Weapons",
-             5 "NPCs",
-             6 "Survivors",
-             7 "Survivor Voicesets",
-             8 "NPC Voicesets",
-             9 "Weapons Sounds",
-             10 "Misc Sounds",
-             11 "Textures"
-            */
-            m_pCheckBox[0].Bounds = new Rectangle(6, (Height - 160) + 0, 100, 20);
-            m_pCheckBox[1].Bounds = new Rectangle(6, (Height - 160) + 20, 100, 20);
-            m_pCheckBox[2].Bounds = new Rectangle(6, (Height - 160) + 40, 100, 20);
-            m_pCheckBox[3].Bounds = new Rectangle(6, (Height - 160) + 60, 100, 20);
-            m_pCheckBox[4].Bounds = new Rectangle(106, (Height - 160) + 0, 100, 20);
-            m_pCheckBox[5].Bounds = new Rectangle(106, (Height - 160) + 20, 100, 20);
-            m_pCheckBox[6].Bounds = new Rectangle(106, (Height - 160) + 40, 100, 20);
-            m_pCheckBox[7].Bounds = new Rectangle(106, (Height - 28) - 20, 140, 20);
-            m_pCheckBox[8].Bounds = new Rectangle(106, (Height - 28) - 20, 100, 20);
-            m_pCheckBox[9].Bounds = new Rectangle(106, (Height - 28) - 40, 140, 20);
-            m_pCheckBox[10].Bounds = new Rectangle(106, (Height - 28) - 0, 100, 20);
-            m_pCheckBox[11].Bounds = new Rectangle(6, (Height - 28) + 0, 100, 20);
+            m_pCheckBox[0].Bounds = new Rectangle(6, (Height - 160) + 0, 150, 20);
+            m_pCheckBox[1].Bounds = new Rectangle(6, (Height - 160) + 20, 150, 20);
+            m_pCheckBox[2].Bounds = new Rectangle(6, (Height - 160) + 40, 150, 20);
+            m_pCheckBox[3].Bounds = new Rectangle(6, (Height - 160) + 60, 150, 20);
+            m_pCheckBox[4].Bounds = new Rectangle(6, (Height - 160) + 80, 150, 20);
+
+            // Lets hide em
+            m_pCheckBox[0].Hide();
+            m_pCheckBox[1].Hide();
+            m_pCheckBox[2].Hide();
+            m_pCheckBox[3].Hide();
+            m_pCheckBox[4].Hide();
 
             m_pContestTags = new ComboBox();
             m_pContestTags.Parent = this;
@@ -341,67 +340,93 @@ namespace workshopper
 
             // Lets check what type it is
             if (szItem == utils.GetWorkshopType[0])
-                SetTags(0);
+                SetTags(0, true);
             else if (szItem == utils.GetWorkshopType[1])
-                SetTags(1);
+                SetTags(1, true);
             else if (szItem == utils.GetWorkshopType[2])
-                SetTags(2);
+                SetTags(2, true);
 
             // Lets reset everything...
-            for (int i = 0; i < 12; i++)
-            {
-                RemoveTag(utils.GetAvailableTags[i]);
+            for (int i = 0; i < 5; i++)
                 m_pCheckBox[i].ActiviateItem(false);
-            }
+
+            for (int i = 0; i < utils.GetAvailableTags[i].Count(); i++)
+                RemoveTag(utils.GetAvailableTags[i]);
         }
 
-        private void SetTags(int tagtype)
+        private void SetTags(int tagtype, bool listchange=false)
         {
+            if (listchange)
+            {
+                // Deactivate them
+                m_pCheckBox[0].ActiviateItem(false);
+                m_pCheckBox[1].ActiviateItem(false);
+                m_pCheckBox[2].ActiviateItem(false);
+                m_pCheckBox[3].ActiviateItem(false);
+                m_pCheckBox[4].ActiviateItem(false);
+            }
+
+            // Lets make sure they are shown
+            m_pCheckBox[0].Show();
+            m_pCheckBox[1].Show();
+            m_pCheckBox[2].Show();
+            m_pCheckBox[3].Show();
+
+            /*
+             0 "Story Mode",
+             1 "Objective",
+             2 "Elimination",
+             3 "Arena",
+             4 "Weapons",
+             5 "NPCs",
+             6 "Survivors",
+             7 "Survivor Voicesets",
+             8 "NPC Voicesets",
+             9 "Weapons Sounds",
+             10 "Misc Sounds",
+             11 "Textures"
+            */
             // Lets check what type it is
             if (tagtype == 0)
             {
-                m_pCheckBox[0].EnableItem(true);
-                m_pCheckBox[1].EnableItem(true);
-                m_pCheckBox[2].EnableItem(true);
-                m_pCheckBox[3].EnableItem(true);
-                m_pCheckBox[4].EnableItem(false);
-                m_pCheckBox[5].EnableItem(false);
-                m_pCheckBox[6].EnableItem(false);
-                m_pCheckBox[7].EnableItem(false);
-                m_pCheckBox[8].EnableItem(false);
-                m_pCheckBox[9].EnableItem(false);
-                m_pCheckBox[10].EnableItem(false);
-                m_pCheckBox[11].EnableItem(true);
+                m_pCheckBox[0].SetText("Story Mode");
+                m_pCheckBox[1].SetText("Objective");
+                m_pCheckBox[2].SetText("Elimination");
+                m_pCheckBox[3].SetText("Arena");
+                m_pCheckBox[4].SetText("Textures");
+
+                // Bounds
+                m_pCheckBox[0].Bounds = new Rectangle(6, (Height - 160) + 0, 100, 20);
+                m_pCheckBox[3].Bounds = new Rectangle(6, (Height - 160) + 60, 150, 20);
+                m_pCheckBox[4].Bounds = new Rectangle(106, (Height - 160) + 0, 100, 20);
+
+                m_pCheckBox[4].Show();
             }
             else if (tagtype == 1)
             {
-                m_pCheckBox[0].EnableItem(false);
-                m_pCheckBox[1].EnableItem(false);
-                m_pCheckBox[2].EnableItem(false);
-                m_pCheckBox[3].EnableItem(false);
-                m_pCheckBox[4].EnableItem(true);
-                m_pCheckBox[5].EnableItem(true);
-                m_pCheckBox[6].EnableItem(true);
-                m_pCheckBox[7].EnableItem(false);
-                m_pCheckBox[8].EnableItem(false);
-                m_pCheckBox[9].EnableItem(false);
-                m_pCheckBox[10].EnableItem(false);
-                m_pCheckBox[11].EnableItem(true);
+                m_pCheckBox[0].SetText("Weapons");
+                m_pCheckBox[1].SetText("NPCs");
+                m_pCheckBox[2].SetText("Survivors");
+                m_pCheckBox[3].SetText("Textures");
+
+                // Bounds
+                m_pCheckBox[0].Bounds = new Rectangle(6, (Height - 160) + 0, 100, 20);
+                m_pCheckBox[3].Bounds = new Rectangle(106, (Height - 160) + 0, 100, 20);
+
+                m_pCheckBox[4].Hide();
             }
             else if (tagtype == 2)
             {
-                m_pCheckBox[0].EnableItem(false);
-                m_pCheckBox[1].EnableItem(false);
-                m_pCheckBox[2].EnableItem(false);
-                m_pCheckBox[3].EnableItem(false);
-                m_pCheckBox[4].EnableItem(false);
-                m_pCheckBox[5].EnableItem(false);
-                m_pCheckBox[6].EnableItem(false);
-                m_pCheckBox[7].EnableItem(true);
-                m_pCheckBox[8].EnableItem(true);
-                m_pCheckBox[9].EnableItem(true);
-                m_pCheckBox[10].EnableItem(true);
-                m_pCheckBox[11].EnableItem(false);
+                m_pCheckBox[0].SetText("Survivor Voicesets");
+                m_pCheckBox[1].SetText("NPC Voicesets");
+                m_pCheckBox[2].SetText("Weapons Sounds");
+                m_pCheckBox[3].SetText("Misc Sounds");
+
+                // Bounds
+                m_pCheckBox[0].Bounds = new Rectangle(6, (Height - 160) + 0, 150, 20);
+                m_pCheckBox[3].Bounds = new Rectangle(156, (Height - 160) + 0, 100, 20);
+
+                m_pCheckBox[4].Hide();
             }
         }
 
